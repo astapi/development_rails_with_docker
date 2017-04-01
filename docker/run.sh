@@ -11,4 +11,4 @@ if [ "$RACK_ENV" = 'development' -o "$RACK_ENV" = 'test' -o "$RACK_ENV" = '' ]; 
   exit 0
 fi
 
-bundle exec unicorn -c config/unicorn.rb -E $RACK_ENV -D
+bundle exec unicorn -c config/unicorn.rb -E $RACK_ENV
