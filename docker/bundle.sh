@@ -1,15 +1,22 @@
 #!/bin/bash
 ENV=$RACK_ENV
+export uid=$UID
+export gid=$GID
 
 if [ "$ENV" = 'production' ]; then
-  docker run -p 3000:3000 -v `pwd`:/myapp -it -e "RACK_ENV=$ENV" docker_rails:0.1 s
+  docker-compose run --entrypoint=$entrypoint -e RACK_ENV=$ENV web s
   exit 0
 fi
 
-if [ $# -eq 0 ]; then
-  docker run -p 3000:3000 -v `pwd`:/myapp -e "RACK_ENV=development" docker_rails:0.1
-elif [ $1 = 'rspec' ]; then
-  docker run -p 3000:3000 -v `pwd`:/myapp -e "RACK_ENV=test" docker_rails:0.1 $@
-elif [ $1 = 's' ]; then
-  docker run -p 3000:3000 -v `pwd`:/myapp -it -e "RACK_ENV=development" docker_rails:0.1 s
+entrypoint=docker/run.sh
+if [ "$1" = 'up' ]; then
+  docker-compose up
+elif [ "$1" = 'rspec' ]; then
+  docker-compose run --entrypoint=$entrypoint -e RACK_ENV=test web $@
+elif [ "$1" = 'spring' ]; then
+  docker-compose run -u "$UID:$GID" --entrypoint=$entrypoint -d spring spring
+elif [ "$1" = 's' ]; then
+  docker-compose run -p 3000:3000 -u "" --entrypoint=$entrypoint -e RACK_ENV=development web s
+else
+  docker-compose run -u "$UID:$GID" --entrypoint=$entrypoint -e RACK_ENV=development web $@
 fi

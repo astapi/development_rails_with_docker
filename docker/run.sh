@@ -5,8 +5,12 @@ if [ "$RACK_ENV" = 'development' -o "$RACK_ENV" = 'test' -o "$RACK_ENV" = '' ]; 
     bundle exec rails -h
   elif [ $1 = 'rspec' ]; then
     bundle exec $@
+  elif [ $1 = 'spring' ]; then
+    bundle exec spring binstub --all
+    #bundle exec spring binstub --remove --all
+    bin/spring server
   else
-    bundle exec rails $@
+    time bundle exec rails $@
   fi
   exit 0
 fi

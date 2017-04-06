@@ -1,11 +1,11 @@
 pid "/tmp/unicorn.pid"
 
 # listen
-if ENV['RACK_ENV'] == 'production' || ENV['RACK_ENV'] == 'staging'
-  listen "/tmp/unicorn.sock", backlog: 512
-else
-  listen 9292, tcp_nopush: true
-end
+#if ENV['RACK_ENV'] == 'production' || ENV['RACK_ENV'] == 'staging'
+#  listen "/tmp/unicorn.sock", backlog: 512
+#else
+listen 9292, tcp_nopush: true
+#end
 
 # logging
 #stderr_path "/var/log/unicorn/unicorn_error.log"
